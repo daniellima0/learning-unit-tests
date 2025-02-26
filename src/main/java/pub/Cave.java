@@ -1,12 +1,12 @@
 package pub;
-import java.util.Vector;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Cave {
-	public Vector<Boisson> rayons;
+	ArrayList<Boisson> rayons;
 
 	public Cave(){
-		this.rayons = new Vector<>();
+		this.rayons = new ArrayList<>();
 	}
 
 	public void add(Boisson b){
@@ -14,13 +14,12 @@ public class Cave {
 	}
 
 	public Boisson take(String nom){
-		Boisson retour = null;
-		Enumeration<Boisson> e = this.rayons.elements();
-		while (e.hasMoreElements()) {
-			retour = e.nextElement();
-			if (retour.nom.equalsIgnoreCase(nom)) {
-				this.rayons.remove(retour);
-				return retour;
+		Iterator<Boisson> iterator = this.rayons.iterator();
+		while (iterator.hasNext()) {
+			Boisson boisson = iterator.next();
+			if (boisson.nom.equalsIgnoreCase(nom)) {
+				iterator.remove(); // Safe removal using Iterator
+				return boisson;
 			}
 		}
 		return null;

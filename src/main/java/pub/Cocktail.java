@@ -1,25 +1,24 @@
 package pub;
-import java.util.Vector;
-import java.util.Enumeration;
+import java.util.ArrayList;
 
 public class Cocktail {
-	private class Ingrediant {
-		public String ingrediant;
-		public double quantite;
+	private static class Ingrediant {
+		String name;
+		double quantite;
 
-		public Ingrediant(String ingrediant, double quantite){
-			this.ingrediant = ingrediant;
+		public Ingrediant(String name, double quantite){
+			this.name = name;
 			this.quantite = quantite;
 		}
 	}
 
-	public String nom;
-	public Vector<Ingrediant> ingrediants;
-	public boolean alcoolise;
+	String nom;
+	ArrayList<Ingrediant> ingrediants;
+	boolean alcoolise;
 
 	public Cocktail(String nom){
 		this.nom = nom;
-		this.ingrediants = new Vector<>();
+		this.ingrediants = new ArrayList<>();
 		this.alcoolise = false;
 	}
 
@@ -37,10 +36,8 @@ public class Cocktail {
 
 	public String toString(){
 		StringBuilder result = new StringBuilder();
-		Enumeration<Ingrediant> e = this.ingrediants.elements();
-		while (e.hasMoreElements()) {
-			Ingrediant current = e.nextElement();
-			result.append(current.ingrediant).append(" ").append(current.quantite).append("%\t");
+		for (Ingrediant current : ingrediants) {  // Substituição de Enumeration por for-each
+			result.append(current.name).append(" ").append(current.quantite).append("%\t");
 		}
 		return result.toString();
 	}

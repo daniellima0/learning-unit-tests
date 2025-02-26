@@ -1,11 +1,9 @@
 package pub;
 
 public class Boisson {
-	public String nom;
-	public boolean alcoolise;
-	public float degre;
-	public float volume;
-	public float prix;
+	String nom;
+	boolean alcoolise;
+	float degre;
 
 	public Boisson(String nom){
 		this.nom = nom;
