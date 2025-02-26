@@ -30,8 +30,8 @@ class BarTest {
     @Test
     void testAddNonAlcoholicDrink() {
         bar.add(coffee);
-        assertEquals(1, bar.boissonFroide.size());
-        assertEquals("Coffee", bar.boissonFroide.getFirst().nom); // Corrigido
+        assertEquals(1, bar.boissonChaude.size());
+        assertEquals("Coffee", bar.boissonChaude.getFirst().nom);
     }
 
     @Test

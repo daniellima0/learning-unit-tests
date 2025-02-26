@@ -1,67 +1,47 @@
 package pub;
-
-import java.util.Vector; 
+import java.util.Vector;
 import java.util.Enumeration;
 
-/**
- * @author Pierre Le Fameux
- *
- */
 public class Cocktail {
-	
-	private class Ingrediant{
+	private class Ingrediant {
 		public String ingrediant;
-		public Double quantite;
-		
-		public Ingrediant(String ingrediant, Double quantite){
+		public double quantite;
+
+		public Ingrediant(String ingrediant, double quantite){
 			this.ingrediant = ingrediant;
 			this.quantite = quantite;
 		}
 	}
-	
+
 	public String nom;
 	public Vector<Ingrediant> ingrediants;
-	public Boolean alcoolise;
-	
-	/**
-	 * Creates a Cocktail with its name
-	 * @param nom
-	 */
+	public boolean alcoolise;
+
 	public Cocktail(String nom){
 		this.nom = nom;
-		this.ingrediants = new Vector<Ingrediant>();
+		this.ingrediants = new Vector<>();
 		this.alcoolise = false;
 	}
-	
-	/**
-	 * add a new element into the Cocktail.
-	 * @param ingrediant
-	 * @param quantite
-	 */
-	public void add(String ingrediant, Double quantite){
+
+	public void add(String ingrediant, double quantite){
+		if (ingrediant.equalsIgnoreCase("whiskey") || ingrediant.equalsIgnoreCase("rum") ||
+				ingrediant.equalsIgnoreCase("vodka") || ingrediant.equalsIgnoreCase("tequila")) {
+			this.alcoolise = true;
+		}
 		this.ingrediants.add(new Ingrediant(ingrediant, quantite));
 	}
-	
-	/**
-	 * alcoolFree test if the Cocktail is free alcool.
-	 * @return true if the Cocktail is free alcool
-	 */
-	public Boolean alcoolFree(){
-		return this.alcoolise;
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString(){
-		String retour = new String();
-		Enumeration e = this.ingrediants.elements ();
-		Ingrediant current;
-		while (e.hasMoreElements ()) {
-			current = (Ingrediant)e.nextElement();
-			retour = retour + current.ingrediant + " " + current.quantite + "%" + "\t";
-		}
-		return retour;
+
+	public boolean alcoolFree(){
+		return !this.alcoolise;
 	}
 
+	public String toString(){
+		StringBuilder result = new StringBuilder();
+		Enumeration<Ingrediant> e = this.ingrediants.elements();
+		while (e.hasMoreElements()) {
+			Ingrediant current = e.nextElement();
+			result.append(current.ingrediant).append(" ").append(current.quantite).append("%\t");
+		}
+		return result.toString();
+	}
 }
