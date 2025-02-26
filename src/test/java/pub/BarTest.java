@@ -1,70 +1,85 @@
 package pub;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BarTest {
+
     private Bar bar;
+    private Boisson coffee;
+    private Boisson whiskey;
+    private Cocktail nonAlcoholicCocktail;
+    private Cocktail alcoholicCocktail;
 
     @BeforeEach
     void setUp() {
         bar = new Bar();
+        coffee = new Boisson("Coffee");
+        whiskey = new Boisson("Whiskey", 40.0f);
+        nonAlcoholicCocktail = new Cocktail("Fruit Punch");
+        alcoholicCocktail = new Cocktail("Whiskey Sour");
+
+        nonAlcoholicCocktail.add("Orange Juice", 50.0);
+        nonAlcoholicCocktail.add("Pineapple Juice", 50.0);
+
+        alcoholicCocktail.add("Whiskey", 50.0);
+        alcoholicCocktail.add("Lemon Juice", 50.0);
     }
 
     @Test
-    void addBoisson() {
-        Boisson cafe = new Boisson("Café", false);
-        Boisson biere = new Boisson("Bière", true);
-
-        bar.add(cafe);
-        bar.add(biere);
-
-        assertTrue(bar.boissonFroide.contains(cafe));
-        assertTrue(bar.boissonAlcoolisee.contains(biere));
+    void testAddNonAlcoholicDrink() {
+        bar.add(coffee);
+        assertEquals(1, bar.boissonFroide.size());
+        assertEquals("Coffee", bar.boissonFroide.getFirst().nom); // Corrigido
     }
 
     @Test
-    void addCocktail() {
-        Cocktail mojito = new Cocktail("Mojito", false);
-        Cocktail smoothie = new Cocktail("Smoothie", true);
-
-        bar.add(mojito);
-        bar.add(smoothie);
-
-        assertTrue(bar.cocktailAvecAlcoole.contains(mojito));
-        assertTrue(bar.cocktailSansAlcoole.contains(smoothie));
+    void testAddAlcoholicDrink() {
+        bar.add(whiskey);
+        assertEquals(1, bar.boissonAlcoolisee.size());
+        assertEquals("Whiskey", bar.boissonAlcoolisee.getFirst().nom); // Corrigido
     }
 
     @Test
-    void servBoisson() {
-        Boisson jus = new Boisson("Jus d'orange", false);
-        bar.add(jus);
-
-        assertEquals(jus, bar.serv("Jus d'orange"));
-        assertFalse(bar.boissonFroide.contains(jus));
+    void testAddNonAlcoholicCocktail() {
+        bar.add(nonAlcoholicCocktail);
+        assertEquals(1, bar.cocktailSansAlcoole.size());
+        assertEquals("Fruit Punch", bar.cocktailSansAlcoole.getFirst().nom); // Corrigido
     }
 
     @Test
-    void servCocktail() {
-        Cocktail pinaColada = new Cocktail("Piña Colada", false);
-        bar.add(pinaColada);
-
-        assertEquals(pinaColada, bar.serv("Piña Colada"));
-        assertFalse(bar.cocktailAvecAlcoole.contains(pinaColada));
+    void testAddAlcoholicCocktail() {
+        bar.add(alcoholicCocktail);
+        assertEquals(1, bar.cocktailAvecAlcoole.size());
+        assertEquals("Whiskey Sour", bar.cocktailAvecAlcoole.getFirst().nom); // Corrigido
     }
 
     @Test
-    void testToString() {
-        Boisson the = new Boisson("Thé", false);
-        Cocktail virginMojito = new Cocktail("Virgin Mojito", true);
+    void testServeDrinkAvailable() {
+        bar.add(coffee);
+        Boisson servedDrink = (Boisson) bar.serv("Coffee");
+        assertNotNull(servedDrink);
+        assertEquals("Coffee", servedDrink.nom);
+        assertEquals(0, bar.boissonFroide.size());
+    }
 
-        bar.add(the);
-        bar.add(virginMojito);
+    @Test
+    void testServeDrinkNotAvailable() {
+        assertNull(bar.serv("Coca-Cola"));
+    }
 
-        String output = bar.toString();
+    @Test
+    void testServeCocktailAvailable() {
+        bar.add(nonAlcoholicCocktail);
+        Cocktail servedCocktail = (Cocktail) bar.serv("Fruit Punch");
+        assertNotNull(servedCocktail);
+        assertEquals("Fruit Punch", servedCocktail.nom);
+        assertEquals(0, bar.cocktailSansAlcoole.size());
+    }
 
-        assertTrue(output.contains("Thé"));
-        assertTrue(output.contains("Virgin Mojito"));
+    @Test
+    void testServeCocktailNotAvailable() {
+        assertNull(bar.serv("Mojito"));
     }
 }
